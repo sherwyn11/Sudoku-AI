@@ -19,8 +19,7 @@ if __name__ == '__main__':
     recognize = DigitRecognition()
     recognize.load_keras_model()
     digits = recognize.get_digits()
-    digits[9] = 6
-    print(digits)
+
     solver = Solver()
     solver.load_solver_model('model.h5')
     solver.solve(digits)
