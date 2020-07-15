@@ -64,7 +64,7 @@ def merge_lines(lines, img):
     return lines
 
 
-def preprocess_image(img):
+def preprocess_image(img, m, n):
     rows = np.shape(img)[0]
 
     for i in range(rows):
@@ -113,4 +113,19 @@ def preprocess_image(img):
         for x in range(startatX, (rows - colleft + colright)//2):
             newimg[y, x] = img[rowtop + y - startatY, colleft + x - startatX]
 
+    cv2.imwrite('NewCells/Cell{}{}.png'.format(str(m), str(n)), newimg)
+
     return newimg
+
+
+def check_if_white(img):
+    count  = 0
+    for i in img:
+        for j in i:
+            if j > 250:
+                count+= 1
+        
+    if count >= 5:
+        return True
+    else:
+        return False
