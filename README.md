@@ -60,9 +60,9 @@ pip install -r requirements.txt
 python app.py
 ```
 
-4. Open <b>localhost:5000/solve<b> in the browser.
+4. Open <b>localhost:5000/solve</b> in the browser.
 
-## Limitations & Future Scope
+## Limitations and Future Scope
 
 <ul>
   <li>Extraction of the Sudoku board is not extremely accuarate in some cases.</li>
