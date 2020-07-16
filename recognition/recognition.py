@@ -15,14 +15,14 @@ class DigitRecognition:
     def load_keras_model(self):
         self.model = load_model(MODEL_PATH + 'model_digits99.h5')
 
-    def get_digits(self):
-        img_list = os.listdir(DIGITS_PATH)
-        img_list.sort()
+    def get_digits(self, cells):
+        # img_list = os.listdir(DIGITS_PATH)
+        # img_list.sort()
         i = 0
         j = 0
-        for img in img_list:
-            image = cv2.imread(DIGITS_PATH + img, 0)
-            image = preprocess_image(image, i, j)
+        for img in cells:
+            # image = cv2.imread(DIGITS_PATH + img, 0)
+            image = preprocess_image(img, i, j)
             if j % 9 == 0 and j != 0:
                 i += 1
                 j = 0

@@ -3,7 +3,7 @@ import imutils
 import numpy as np
 
 from helpers.helpers import *
-
+from PIL import Image
 
 class Preprocess:
 
@@ -14,7 +14,9 @@ class Preprocess:
         self.extracted_grid = None
 
     def read_img(self, image_path):
-        self.image = cv2.imread(image_path, 0)
+        # self.image = cv2.imread(image_path, 0)
+        npimg = np.fromstring(image_path, np.uint8)
+        self.image = cv2.imdecode(npimg, cv2.IMREAD_GRAYSCALE)
 
     def threshold_and_invert(self):
         converted_img = cv2.adaptiveThreshold(self.image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 57, 5)
@@ -221,6 +223,8 @@ class Preprocess:
 
 
     def create_image_grid(self):
+        cells = []
+
         if self.extracted_grid is None:
             raise Exception('Grid not yet extracted')
         grid = np.copy(self.extracted_grid)
@@ -250,6 +254,7 @@ class Preprocess:
 
         for i in range(9):
             for j in range(9):
-                cv2.imwrite(str('Digits/cell'+str(i)+str(j)+'.jpg'), finalgrid[i][j])
+                cells.append(finalgrid[i][j])
+                # cv2.imwrite(str('Digits/cell'+str(i)+str(j)+'.jpg'), finalgrid[i][j])
         
-        return finalgrid
+        return np.array(cells)

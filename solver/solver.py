@@ -23,5 +23,5 @@ class Solver:
         for number in opt[0]:
             self.output.append(np.argmax(number) + 1)
 
-        print(self.output)
+        print(digits)
         return self.output
