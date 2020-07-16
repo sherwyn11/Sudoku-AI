@@ -43,7 +43,6 @@ The app is divided into <b>3</b> main parts:
 
 ![](assets/demo.gif)
 
-
 ## Getting started
 
 1. Clone and download the repo
@@ -60,6 +59,8 @@ pip install -r requirements.txt
 ```bash
 python app.py
 ```
+
+4. Open <b>localhost:5000/solve<b> in the browser.
 
 ## Limitations & Future Scope
 
