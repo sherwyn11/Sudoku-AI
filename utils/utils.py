@@ -1,7 +1,9 @@
+import copy
+
 from preprocessing.preprocess import Preprocess
 from recognition.recognition import DigitRecognition
 from solver.solver import Solver
-from helpers.constants import IMAGE_PATH
+from helpers.constants import IMAGE_PATH, SUDOKU_SOLVER_MODEL_NAME
 
 
 def preprocess_uploaded_image(image_file):
@@ -29,7 +31,7 @@ def get_digits(cells):
 
 def solve_sudoku(digits):
     solver = Solver()
-    solver.load_solver_model('model.h5')
-    solved = solver.solve(digits)
+    solver.load_solver_model(SUDOKU_SOLVER_MODEL_NAME)
+    solved = solver.solve_sudoku(digits)
 
     return solved

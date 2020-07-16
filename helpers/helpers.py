@@ -64,7 +64,7 @@ def merge_lines(lines, img):
     return lines
 
 
-def preprocess_image(img, m, n):
+def preprocess_image(img):
     rows = np.shape(img)[0]
 
     for i in range(rows):
@@ -113,8 +113,6 @@ def preprocess_image(img, m, n):
         for x in range(startatX, (rows - colleft + colright)//2):
             newimg[y, x] = img[rowtop + y - startatY, colleft + x - startatX]
 
-    cv2.imwrite('NewCells/Cell{}{}.png'.format(str(m), str(n)), newimg)
-
     return newimg
 
 
@@ -131,35 +129,10 @@ def check_if_white(img):
         return False
 
 
-def reshape_digits(digits): 
-
-    data = pd.read_csv(file)
-
-    feat_raw = data['quizzes']
-    label_raw = data['solutions']
-
-    feat = []
-    label = []
-
-    for i in feat_raw:
+def normalize_data(data):
     
-        x = np.array([int(j) for j in i]).reshape((9,9,1))
-        feat.append(x)
+    return (data/9) - .5
     
-    feat = np.array(feat)
-    feat = feat/9
-    feat -= .5    
+def denormalize_data(data):
     
-    for i in label_raw:
-    
-        x = np.array([int(j) for j in i]).reshape((81,1)) - 1
-        label.append(x)   
-    
-    label = np.array(label)
-    
-    del(feat_raw)
-    del(label_raw)    
-
-    x_train, x_test, y_train, y_test = train_test_split(feat, label, test_size=0.2, random_state=42)
-    
-    return x_train, x_test, y_train, y_test
+    return (data + .5) * 9

@@ -8,15 +8,17 @@ def home():
     return 'Test Works!'
 
 
-@app.route('/solve', methods=['POST'])
-def solved():
-    sudoku_image = request.files['image'].read()
-    cells = preprocess_uploaded_image(sudoku_image)
-    digits = get_digits(cells)
-    sudoku_solved = solve_sudoku(digits)
-    print(sudoku_solved)
+@app.route('/solve', methods=['GET', 'POST'])
+def solve():
+    if request.method == 'POST':
+        sudoku_image = request.files['image'].read()
+        cells = preprocess_uploaded_image(sudoku_image)
+        digits = get_digits(cells)
+        sudoku_solved = solve_sudoku(digits)
 
-    return "Done"
+        return render_template('index.html', data=sudoku_solved, posted=1)
+    else:
+        return render_template('index.html', posted=0)
 
 
 if __name__ == '__main__':
