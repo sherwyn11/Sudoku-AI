@@ -45,17 +45,17 @@ The app is divided into <b>3</b> main parts:
 
 ## Getting started
 
-1. Clone and download the repo
+1. Clone and download the repo.
 ```bash
   git clone <this_repo_url>
 ```
 
-2. Download the required python packages
+2. Download the required python packages.
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Start the Flask server
+3. Start the Flask server.
 ```bash
 python app.py
 ```
