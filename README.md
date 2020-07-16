@@ -61,7 +61,7 @@ pip install -r requirements.txt
 python app.py
 ```
 
-## Limitaions & Future Scope
+## Limitations & Future Scope
 
 <ul>
   <li>Extraction of the Sudoku board is not extremely accuarate in some cases.</li>
