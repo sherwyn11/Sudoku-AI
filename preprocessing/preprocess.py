@@ -93,9 +93,9 @@ class Preprocess:
         '''
 
         lines = cv2.HoughLines(eroded_image, 1, np.pi / 180, 200)
-        tmpimg = np.copy(eroded_image)
+        temp_img = np.copy(eroded_image)
         for i in range(len(lines)):
-            tmpimp = draw_line(lines[i], tmpimg)
+            tmpimp = draw_line(lines[i], temp_img)
 
         return tmpimp, lines
 
@@ -133,19 +133,19 @@ class Preprocess:
                     leftedge[0] = current[:]
                     leftxintercept = xIntercept
 
-        tmpimg = np.copy(lined_image)
+        temp_img = np.copy(lined_image)
         lin_image = np.copy(self.image)
         lin_image = draw_line(leftedge, lin_image)
         lin_image = draw_line(rightedge, lin_image)
         lin_image = draw_line(topedge, lin_image)
         lin_image = draw_line(bottomedge, lin_image)
 
-        tmpimg = draw_line(leftedge, tmpimg)
-        tmpimg = draw_line(rightedge, tmpimg)
-        tmpimg = draw_line(topedge, tmpimg)
-        tmpimg = draw_line(bottomedge, tmpimg)
+        temp_img = draw_line(leftedge, temp_img)
+        temp_img = draw_line(rightedge, temp_img)
+        temp_img = draw_line(topedge, temp_img)
+        temp_img = draw_line(bottomedge, temp_img)
 
-        return lin_image, tmpimg, leftedge, rightedge, topedge, bottomedge
+        return lin_image, temp_img, leftedge, rightedge, topedge, bottomedge
         
 
     def calculate_points(self, lin_image, leftedge, rightedge, topedge, bottomedge, height, width):
@@ -246,11 +246,11 @@ class Preprocess:
         Finding the lengths of the maximum sides
         '''
 
-        leftedgelensq = (ptBottomLeft[0] - ptTopLeft[0]) ** 2 + (ptBottomLeft[1] - ptTopLeft[1]) ** 2
-        rightedgelensq = (ptBottomRight[0] - ptTopRight[0]) ** 2 + (ptBottomRight[1] - ptTopRight[1]) ** 2
-        topedgelensq = (ptTopRight[0] - ptTopLeft[0])**2 + (ptTopLeft[1] - ptTopRight[1]) ** 2
-        bottomedgelensq = (ptBottomRight[0] - ptBottomLeft[0]) ** 2 + (ptBottomLeft[1] - ptBottomRight[1]) ** 2
-        maxlength = int(max(leftedgelensq, rightedgelensq, bottomedgelensq, topedgelensq) ** 0.5)
+        left_edge_sqrd = (ptBottomLeft[0] - ptTopLeft[0]) ** 2 + (ptBottomLeft[1] - ptTopLeft[1]) ** 2
+        right_edge_sqrd = (ptBottomRight[0] - ptTopRight[0]) ** 2 + (ptBottomRight[1] - ptTopRight[1]) ** 2
+        top_edge_sqrd = (ptTopRight[0] - ptTopLeft[0])**2 + (ptTopLeft[1] - ptTopRight[1]) ** 2
+        bottom_edge_sqrd = (ptBottomRight[0] - ptBottomLeft[0]) ** 2 + (ptBottomLeft[1] - ptBottomRight[1]) ** 2
+        maxlength = int(max(left_edge_sqrd, right_edge_sqrd, bottom_edge_sqrd, top_edge_sqrd) ** 0.5)
 
         src = [(0, 0)] * 4
         dst = [(0, 0)] * 4
