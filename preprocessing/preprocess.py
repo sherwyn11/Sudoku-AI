@@ -3,30 +3,53 @@ import imutils
 import numpy as np
 
 from helpers.helpers import *
-from PIL import Image
+
 
 class Preprocess:
 
     def __init__(self, kernel_size, iterations):
+        '''
+        Init function
+        '''
+
         self.image = None
         self.kernel = np.ones((kernel_size, kernel_size), np.uint8)  
         self.iterations = iterations
         self.extracted_grid = None
 
+
     def read_img(self, image_path):
-        # self.image = cv2.imread(image_path, 0)
+        '''
+        Read the uploaded image using Open-CV
+        '''
+
         npimg = np.fromstring(image_path, np.uint8)
         self.image = cv2.imdecode(npimg, cv2.IMREAD_GRAYSCALE)
 
+
     def threshold_and_invert(self):
+        '''
+        Using Open-CV's Adaptive Threshold function to converth the image into B&W
+        '''
+
         converted_img = cv2.adaptiveThreshold(self.image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 57, 5)
         return converted_img
 
+
     def dialate_image(self, thresh_img):
+        '''
+        Dialating the image to join broken parts of the image. It also helps in sharpening the borderline of the sudoku
+        '''
+
         dialated = cv2.dilate(thresh_img, self.kernel, iterations=self.iterations) 
         return dialated
 
+
     def flood_fill_image(self, dialated_img):
+        '''
+        Flood-filling the image to find the largest blob(border)
+        '''
+
         outerbox = dialated_img
         maxi = - 1
         maxpt = None
@@ -54,11 +77,21 @@ class Preprocess:
 
         return outerbox, height, width
 
+
     def erode_image(self, box_highlighed_image):
+        '''
+        Reverting the process of dialation
+        '''
+
         eroded = cv2.erode(box_highlighed_image, self.kernel, iterations=self.iterations) 
         return eroded
 
+
     def draw_lines_on_image(self, eroded_image):
+        '''
+        Draw lines on the image
+        '''
+
         lines = cv2.HoughLines(eroded_image, 1, np.pi / 180, 200)
         tmpimg = np.copy(eroded_image)
         for i in range(len(lines)):
@@ -66,7 +99,12 @@ class Preprocess:
 
         return tmpimp, lines
 
+
     def find_extreme_lines(self, lines, lined_image):
+        '''
+        Finding the extreme lines(border lines)
+        '''
+
         lines = merge_lines(lines, lined_image)
 
         topedge = [[1000, 1000]]
@@ -111,6 +149,10 @@ class Preprocess:
         
 
     def calculate_points(self, lin_image, leftedge, rightedge, topedge, bottomedge, height, width):
+        '''
+        Finding the extreme points 
+        '''
+
         leftedge = leftedge[0]
         rightedge = rightedge[0]
         bottomedge = bottomedge[0]
@@ -200,6 +242,10 @@ class Preprocess:
 
 
     def find_max_side_len(self, lin_image, detTopLeft, ptTopLeft, detTopRight, ptTopRight, detBottomRight, ptBottomRight, detBottomLeft, ptBottomLeft):
+        '''
+        Finding the lengths of the maximum sides
+        '''
+
         leftedgelensq = (ptBottomLeft[0] - ptTopLeft[0]) ** 2 + (ptBottomLeft[1] - ptTopLeft[1]) ** 2
         rightedgelensq = (ptBottomRight[0] - ptTopRight[0]) ** 2 + (ptBottomRight[1] - ptTopRight[1]) ** 2
         topedgelensq = (ptTopRight[0] - ptTopLeft[0])**2 + (ptTopLeft[1] - ptTopRight[1]) ** 2
@@ -223,6 +269,10 @@ class Preprocess:
 
 
     def create_image_grid(self):
+        '''
+        Create a grid on the image(Used for extracting each cell)
+        '''
+
         cells = []
 
         if self.extracted_grid is None:
@@ -245,16 +295,9 @@ class Preprocess:
         for i in range(9):
             for j in range(9):
                 finalgrid[i][j] = np.array(finalgrid[i][j])
-        try:
-            for i in range(9):
-                for j in range(9):
-                    os.remove('Digits/cell'+str(i)+str(j)+'.jpg')
-        except:
-            pass
 
         for i in range(9):
             for j in range(9):
                 cells.append(finalgrid[i][j])
-                # cv2.imwrite(str('Digits/cell'+str(i)+str(j)+'.jpg'), finalgrid[i][j])
         
         return np.array(cells)

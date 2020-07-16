@@ -1,7 +1,12 @@
 import numpy as np
 import cv2
 
+
 def draw_line(line, img):
+    '''
+    Draw parallel lines over the image
+    '''
+
     height, width = np.shape(img)
     if line[0][1] != 0:
         m = -1 / np.tan(line[0][1])
@@ -14,6 +19,10 @@ def draw_line(line, img):
 
 
 def merge_lines(lines, img):
+    '''
+    Merge the lines
+    '''
+    
     height, width = np.shape(img)
     for current in lines:
         if current[0][0] is None and current[0][1] is None:
@@ -65,6 +74,10 @@ def merge_lines(lines, img):
 
 
 def preprocess_image(img):
+    '''
+    Preprocessing by flood-filling the image
+    '''
+
     rows = np.shape(img)[0]
 
     for i in range(rows):
@@ -117,6 +130,10 @@ def preprocess_image(img):
 
 
 def check_if_white(img):
+    '''
+    Determine whether the image-cell contains a number or is empty space
+    '''
+
     count  = 0
     for i in img:
         for j in i:
@@ -130,9 +147,16 @@ def check_if_white(img):
 
 
 def normalize_data(data):
-    
+    '''
+    Normalize the data and make it zero-centered
+    '''
+
     return (data/9) - .5
     
+
 def denormalize_data(data):
-    
+    '''
+    Reverse the normalization
+    '''
+
     return (data + .5) * 9

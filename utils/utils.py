@@ -1,5 +1,3 @@
-import copy
-
 from preprocessing.preprocess import Preprocess
 from recognition.recognition import DigitRecognition
 from solver.solver import Solver
@@ -7,6 +5,10 @@ from helpers.constants import IMAGE_PATH, SUDOKU_SOLVER_MODEL_NAME
 
 
 def preprocess_uploaded_image(image_file):
+    '''
+    Perform sudoku image preprocessing
+    '''
+
     preprocess = Preprocess(3, 1)
     preprocess.read_img(image_file)
     conv_img = preprocess.threshold_and_invert()
@@ -22,7 +24,11 @@ def preprocess_uploaded_image(image_file):
     return cells
 
 
-def get_digits(cells):
+def get_digits_from_cells(cells):
+    '''
+    Perform digit recognition
+    '''
+
     recognize = DigitRecognition()
     recognize.load_keras_model()
     digits = recognize.get_digits(cells)
@@ -30,6 +36,10 @@ def get_digits(cells):
     return digits
 
 def solve_sudoku(digits):
+    '''
+    Solving the sudoku
+    '''
+
     solver = Solver()
     solver.load_solver_model(SUDOKU_SOLVER_MODEL_NAME)
     solved = solver.solve_sudoku(digits)

@@ -4,19 +4,29 @@ from helpers.constants import MODEL_PATH
 from helpers.helpers import normalize_data, denormalize_data
 from keras.models import load_model
 
+
 class Solver:
 
     def __init__(self):
+        '''
+        Init function
+        '''
         self.output = []
         self.model = None
     
 
     def load_solver_model(self, model_name):
+        '''
+        Load the trained Keras model for solving the sudoku
+        '''
         self.model = load_model(MODEL_PATH + model_name)
 
 
     def solve_sudoku(self, digits):
-
+        '''
+        Solve the sudoku based on the extracted digits
+        '''
+        
         digits = np.array(digits).reshape((9, 9, 1))
         digits = normalize_data(digits)
 
