@@ -13,16 +13,19 @@
 
     <p><img id="output" width="200" /></p>
 
+    <table>
     {% if posted == 1 %}
+        <tr>
         {% for i in range(0, 81) %}
             {% if i % 9 == 0 %}
-                <br><br>
-                {{ data[i] }}&nbsp;&nbsp;
+                </tr>
+                <td>{{ data[i] }}</td>
             {% else %}
-                {{ data[i] }}&nbsp;&nbsp;
+                <td>{{ data[i] }}</td>
             {% endif %}
         {% endfor %}
     {% endif %}
+    </table>
 
     <script>
         var loadFile = function(event) {
